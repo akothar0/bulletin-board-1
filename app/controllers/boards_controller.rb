@@ -13,6 +13,10 @@ class BoardsController < ApplicationController
     matching_boards = Board.where({ :id => the_id })
 
     @the_board = matching_boards.at(0)
+    today = Date.today
+
+    @active_posts = @the_board.posts_in_board.where("expires_on >= ?", today)
+    @expired_posts = @the_board.posts_in_board.where("expires_on < ?", today)
 
     render({ :template => "boards/show" })
   end
